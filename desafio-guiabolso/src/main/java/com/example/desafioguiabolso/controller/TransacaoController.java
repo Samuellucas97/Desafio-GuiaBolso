@@ -1,6 +1,8 @@
 package com.example.desafioguiabolso.controller;
 
 import com.example.desafioguiabolso.model.Transacao;
+import com.example.desafioguiabolso.service.TransacaoService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
@@ -14,29 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @Validated
-@Slf4j
+@RequiredArgsConstructor
 public class TransacaoController {
+    private final TransacaoService transacaoService;
 
     @GetMapping(path = "/{id}/transacoes/{ano}/{mes}")
-    ResponseEntity<List<Transacao>> get(
-            @PathVariable("id") @Min(value = 1000, message = "O id possui valor mínimo de 1000")
-                                @Max(value = 100000000, message = "O id possui valor máximo de 100000000") Integer id,
-            @PathVariable("ano") Integer ano,
-            @PathVariable("mes") Integer mes
-            ) {
+    ResponseEntity<List<Transacao>> busca(
+            @PathVariable("id") @Min(value = 1000, message = "O id possui valor mínimo 1000")
+                                @Max(value = 100000000, message = "O id possui valor máximo 100000000") Integer id,
+            @PathVariable("ano") @Min(value = 0,message = "o ano possui valor mínimo 0") Integer ano,
+            @PathVariable("mes") @Min(value = 1, message = "O mes possui valor mínimo 1")
+                                @Max(value = 12, message = "O mes possui valor máximo 12") Integer mes ) {
 
-        EasyRandomParameters parameters = new EasyRandomParameters();
-        parameters.stringLengthRange(10, 120);
-
-        EasyRandom generator = new EasyRandom();
-        List<Transacao> transacaoList = generator.objects(Transacao.class, 20).collect(Collectors.toList());
-
-        log.info("Transacao {}", transacaoList);
-
-        return ResponseEntity.ok(transacaoList);
+        return ResponseEntity.ok(transacaoService.busca(ano, mes));
     }
 }
