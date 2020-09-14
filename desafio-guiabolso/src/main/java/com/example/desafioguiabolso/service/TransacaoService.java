@@ -1,31 +1,48 @@
 package com.example.desafioguiabolso.service;
 
 import com.example.desafioguiabolso.model.Transacao;
-import com.example.desafioguiabolso.randomized.IntegerRandom;
-import com.example.desafioguiabolso.randomized.LongRandom;
-import com.example.desafioguiabolso.randomized.StringRandom;
-import org.jeasy.random.EasyRandom;
-import org.jeasy.random.EasyRandomParameters;
+import com.example.desafioguiabolso.utils.TransacaoSemDuplicated;
+import com.example.desafioguiabolso.repository.TransacaoRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class TransacaoService {
+    private final TransacaoRepository transacaoRepository;
 
     public List<Transacao> busca(Integer ano, Integer mes) {
-        EasyRandomParameters parameters = new EasyRandomParameters()
-                .randomize(Long.class, new LongRandom(ano, mes))
-                .randomize(Integer.class, new IntegerRandom())
-                .randomize(String.class, new StringRandom());
+        final List<Transacao> transacaos = identificandoTransacoesDuplicadas(transacaoRepository.busca(ano, mes));
+        return transacaos;
+    }
 
-        EasyRandom generator = new EasyRandom(parameters);
-        List<Transacao> transacaoList = generator.objects(Transacao.class, 20)
-                .collect(Collectors.toList());
+    private List<Transacao> identificandoTransacoesDuplicadas(List<Transacao> transacoesList) {
 
+        List<TransacaoSemDuplicated> transacoesSemDuplicatedLista = new ArrayList<>();
 
-        return transacaoList;
+        for ( Transacao transacao: transacoesList) {
+            TransacaoSemDuplicated atualTransacaoSemDuplicated = TransacaoSemDuplicated.builder()
+                    .descricao(transacao.getDescricao())
+                    .data(transacao.getData())
+                    .valor(transacao.getValor())
+                    .build();
+
+            transacoesSemDuplicatedLista.add(atualTransacaoSemDuplicated);
+
+            Long quantidadeOcorrenciaTransacao = transacoesSemDuplicatedLista.stream()
+                    .filter(transacaoSemDuplicated -> transacaoSemDuplicated.equals(atualTransacaoSemDuplicated)).count();
+
+            if (quantidadeOcorrenciaTransacao == 2) {
+                transacao.setDuplicated(true);
+            }
+        }
+
+        return transacoesList;
     }
 }

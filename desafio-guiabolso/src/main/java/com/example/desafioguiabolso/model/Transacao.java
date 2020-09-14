@@ -1,13 +1,13 @@
 package com.example.desafioguiabolso.model;
 
-import lombok.Getter;
-import lombok.Value;
+import lombok.Builder;
+import lombok.Data;
 
-@Value
-@Getter
+@Data
+@Builder
 public class Transacao {
     private final String descricao;
     private final Long data;
     private final Integer valor;
-    private final Boolean duplicated;
+    private Boolean duplicated;
 }

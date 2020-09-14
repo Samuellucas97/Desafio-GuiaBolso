@@ -18,23 +18,27 @@ import java.util.Set;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
-        StringBuilder message = new StringBuilder();
+    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException excecao) {
 
-        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
-        for (ConstraintViolation<?> violation : violations) {
-            message.append(violation.getMessage().concat(";"));
-        }
-
-        ExcecaoDetalhes exceptionDetails = ExcecaoDetalhes.builder()
+        ExcecaoDetalhes excecaoDetalhes = ExcecaoDetalhes.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
-                .titulo(ex.getClass().getName())
-                .detalhes(ex.getStackTrace().toString())
-                .mensagem(message.toString())
+                .titulo("Erro de validação de campo(s)")
+                .detalhes(excecao.getClass().getName())
+                .mensagem(messageViolacoes(excecao))
                 .build();
 
+        return ResponseEntity.badRequest().body(excecaoDetalhes);
+    }
 
-        return ResponseEntity.badRequest().body(exceptionDetails);
+    private String messageViolacoes(ConstraintViolationException excecao) {
+        StringBuilder mensagem = new StringBuilder();
+        Set<ConstraintViolation<?>> violacoesConjunto = excecao.getConstraintViolations();
+
+        for (ConstraintViolation<?> violation : violacoesConjunto) {
+            mensagem.append(violation.getMessage().concat(";"));
+        }
+
+        return mensagem.toString();
     }
 }

@@ -1,14 +1,14 @@
 package com.example.desafioguiabolso.randomized;
 
+import lombok.extern.slf4j.Slf4j;
 import org.jeasy.random.api.Randomizer;
 
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.YearMonth;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static com.example.desafioguiabolso.utils.DataUtils.*;
+
+@Slf4j
 public class LongRandom implements Randomizer<Long> {
 
     private Integer ano;
@@ -21,17 +21,18 @@ public class LongRandom implements Randomizer<Long> {
 
     @Override
     public Long getRandomValue() {
-        final LocalDate inicioMes = YearMonth.of(ano, mes).atDay(0);
-        final LocalDate finalMes = YearMonth.of(ano,mes).atEndOfMonth();
-
-        long diaAleatorio =  getDataAleatoriaEntreDuasDatas(inicioMes, finalMes);
-
-        return diaAleatorio;
+        return getDataAleatoriaEntreDuasDatas();
     }
 
-    private Long getDataAleatoriaEntreDuasDatas(LocalDate dataInicial, LocalDate dataFinal) {
-        final long dataAleatoria = ThreadLocalRandom.current().nextLong(Date.from(Instant.from(dataInicial)).getTime(),
-                Date.from(Instant.from(dataFinal)).getTime());
+    private Long getDataAleatoriaEntreDuasDatas() {
+        final LocalDate dataInicioMes = getDataInicioMes(this.ano, this.mes);
+        final LocalDate dataFimMes = getDataFimMes(this.ano, this.mes);
+
+        final Long dataInicioMesLong = getDataParaLong(dataInicioMes);
+        final Long dataFimMesLong = getDataParaLong(dataFimMes);
+
+        final Long dataAleatoria = ThreadLocalRandom.current().nextLong(  dataInicioMesLong, dataFimMesLong);
+
         return dataAleatoria;
     }
 }

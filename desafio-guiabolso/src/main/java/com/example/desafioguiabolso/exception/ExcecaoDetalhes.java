@@ -1,12 +1,12 @@
 package com.example.desafioguiabolso.exception;
 
+import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 @Data
-@SuperBuilder
+@Builder
 public class ExcecaoDetalhes {
     protected String titulo;
     protected Integer status;
