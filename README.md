@@ -1,6 +1,6 @@
 ## Introdução
 
-Neste repositório contém um mock de API REST desenvolvida para o desafio técnica da empresa GuiaBolso. Caso deseje saber informações sobre os requisitos do projeto, acesse o [repositório oficial do GuiaBolso](https://github.com/GuiaBolso/seja-um-guia-back) onde é possível encontrar todas informações necessárias.
+Neste repositório contém um mock de API REST desenvolvida para o desafio técnica da empresa Guiabolso. Caso deseje saber informações sobre os requisitos do projeto, acesse o [repositório oficial do Guiabolso](https://github.com/GuiaBolso/seja-um-guia-back) onde é possível encontrar todas informações necessárias.
 
 ## Pré-requisitos
 
