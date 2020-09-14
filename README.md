@@ -7,7 +7,7 @@ Neste repositório contém um mock de API REST desenvolvida para o desafio técn
 - JDK 11 (__opcional, caso deseje realizar modificações no projeto__)
 - Docker
 
-## Como compilar
+## Como compilar e executar
 
 O projeto faz uso do Gradlew como gerenciador de pacotes. É possível rodar o projeto localmente porém é recomendável uso de Docker. Abaixo segue os comandos disponíveis:
 
@@ -20,12 +20,12 @@ O projeto faz uso do Gradlew como gerenciador de pacotes. É possível rodar o p
  
 `./gradlew assemble docker`
 
-### Gerar imagem e rodar container Docker
+### Gerar imagem e executar contêiner Docker
 
 `./gradlew assemble docker dockerRun`
 
 
-### Parar container Docker
+### Parar contêiner Docker
 
 `./gradlew dockerStop`
  
