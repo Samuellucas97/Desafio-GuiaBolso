@@ -8,7 +8,7 @@ import lombok.Getter;
 @EqualsAndHashCode
 @Builder
 public class TransacaoSemDuplicated {
-    private String descricao;
-    private Long data;
-    private Integer valor;
+    private final String descricao;
+    private final Long data;
+    private final Integer valor;
 }

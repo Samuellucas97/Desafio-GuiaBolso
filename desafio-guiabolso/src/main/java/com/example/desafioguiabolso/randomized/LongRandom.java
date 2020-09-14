@@ -1,6 +1,6 @@
 package com.example.desafioguiabolso.randomized;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.jeasy.random.api.Randomizer;
 
 import java.time.LocalDate;
@@ -8,16 +8,10 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static com.example.desafioguiabolso.utils.DataUtils.*;
 
-@Slf4j
+@RequiredArgsConstructor
 public class LongRandom implements Randomizer<Long> {
-
-    private Integer ano;
-    private Integer mes;
-
-    public LongRandom(Integer ano, Integer mes) {
-        this.ano = ano;
-        this.mes = mes;
-    }
+    private final Integer ano;
+    private final Integer mes;
 
     @Override
     public Long getRandomValue() {
@@ -31,7 +25,7 @@ public class LongRandom implements Randomizer<Long> {
         final Long dataInicioMesLong = getDataParaLong(dataInicioMes);
         final Long dataFimMesLong = getDataParaLong(dataFimMes);
 
-        final Long dataAleatoria = ThreadLocalRandom.current().nextLong(  dataInicioMesLong, dataFimMesLong);
+        final Long dataAleatoria = ThreadLocalRandom.current().nextLong(dataInicioMesLong, dataFimMesLong);
 
         return dataAleatoria;
     }
